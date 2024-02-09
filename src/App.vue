@@ -115,7 +115,7 @@ provide('cart', {
   deleteFromCart
 })
 
-provide('cartPrice', cartPrice)
+provide('cartPrice', {cartPrice})
 </script>
 
 <template>
