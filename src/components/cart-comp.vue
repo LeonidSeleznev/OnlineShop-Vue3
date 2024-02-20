@@ -12,7 +12,7 @@ const { cart, deleteFromCart } = inject('cart')
     <div class="cartTransparent flex-1 bg-black opacity-60"></div>
     <div class="cart bg-white w-96 h-full p-8 flex flex-col">
       <cart-header />
-      <div class="cartMain flex items-center flex-col gap-y-2">
+      <div class="cartMain overflow-y-auto scroll-smooth p-1 flex items-center flex-col gap-y-2">
         <cart-items
           v-for="item in cart"
           :key="item.id"

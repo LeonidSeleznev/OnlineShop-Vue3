@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, provide, ref } from 'vue'
+import { computed, onMounted, provide, reactive, ref, watch } from 'vue'
 import axios from 'axios'
 import indexHeader from './components/index-header.vue'
 import footerComp from './components/footer-comp.vue'
@@ -9,18 +9,29 @@ import shopList from './components/shop-list.vue'
 
 onMounted(async () => {
   await fetchItems()
-  await fetchFavorites()
 })
 
 const fetchItems = async () => {
   try {
-    const { data } = await axios.get('https://4aba6cffe4a51351.mokky.dev/items')
+    const params = {
+      sortBy: filterParameters.sortBy
+    }
+
+    if (filterParameters.searchedItem) {
+      params.itemName = `*${filterParameters.searchedItem}*`
+    }
+
+    const { data } = await axios.get('https://4aba6cffe4a51351.mokky.dev/items', {
+      params
+    })
     items.value = data.map((obj) => ({
       ...obj,
       inFavorites: false,
       favoriteId: null,
       inCart: false
     }))
+
+    await fetchFavorites()
   } catch (err) {
     console.log(err)
   }
@@ -56,7 +67,10 @@ const addToFavorites = async (item) => {
       }
       item.inFavorites = true
 
-      const { data } = await axios.post('https://4aba6cffe4a51351.mokky.dev/favorites', favoriteItem)
+      const { data } = await axios.post(
+        'https://4aba6cffe4a51351.mokky.dev/favorites',
+        favoriteItem
+      )
 
       item.favoriteId = data.id
     } else {
@@ -71,6 +85,21 @@ const deleteFromFavorites = async (item) => {
   item.inFavorites = false
 
   await axios.delete(`https://4aba6cffe4a51351.mokky.dev/favorites/${item.favoriteId}`)
+}
+
+const filterParameters = reactive({
+  sortBy: 'itemName',
+  searchedItem: ''
+})
+
+watch(filterParameters, fetchItems)
+
+const changeSortParameter = async (sortParameter) => {
+  filterParameters.sortBy = sortParameter
+}
+
+const searchForItem = (searchText) => {
+  filterParameters.searchedItem = searchText
 }
 
 const items = ref([])
@@ -115,7 +144,7 @@ provide('cart', {
   deleteFromCart
 })
 
-provide('cartPrice', {cartPrice})
+provide('cartPrice', { cartPrice })
 </script>
 
 <template>
@@ -123,7 +152,7 @@ provide('cartPrice', {cartPrice})
   <div class="container w-full sm:w-3/4 m-auto rounded-3xl bg-white shadow-xl">
     <index-header :cartPrice="cartPrice" @open-cart="openCart" />
     <main class="mainWrapper w-3/4 m-auto">
-      <main-header />
+      <main-header @search="searchForItem" @change-sort-parameter="changeSortParameter" />
       <shop-list
         @add-to-cart="cartManipulation"
         @add-to-favorites="addToFavorites"

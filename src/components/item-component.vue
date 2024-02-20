@@ -21,7 +21,7 @@ defineProps({
         alt="favoriteBtn"
         class="absolute top-6 hover:cursor-pointer"
       />
-      <img :src="imageUrl" alt="itemImage" class="hover:cursor-pointer" />
+      <img :src="imageUrl" alt="itemImage" class="max-h-[122px] max-w-36 hover:cursor-pointer" />
       <p class="my-3.5">{{ itemName }}</p>
       <div class="priceAndAddWrapper flex justify-between items-center">
         <div class="priceWrapper">
