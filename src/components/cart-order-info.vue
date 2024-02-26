@@ -2,6 +2,7 @@
 import { computed, inject } from 'vue'
 
 const { cartPrice } = inject('cartPrice')
+const { cart, sendAnOrder } = inject('cart')
 const tax = computed(() => {
   return Math.floor(cartPrice.value * 0.05)
 })
@@ -18,7 +19,7 @@ const tax = computed(() => {
       <b>{{ tax }} руб.</b>
     </div>
     <button
-      disabled
+      @click="sendAnOrder(cart)"
       class="cursor-pointer w-full transition bg-lime-500 disabled:bg-slate-300 text-white h-12 rounded-xl hover:bg-lime-600 active:bg-lime-700"
     >
       Оформить заказ

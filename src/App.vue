@@ -110,6 +110,34 @@ const isCartOpen = ref(false)
 
 const cartPrice = computed(() => cart.value.reduce((acc, item) => (acc += item.itemPrice), 0))
 
+const orderSent = ref(false)
+
+const lastOrderId = ref(null)
+
+const sendAnOrder = async (orderedItems) => {
+  try {
+    const orderInfo = {
+      boughtItems: [],
+      itemsQuantity: orderedItems.length,
+      orderPrice: cartPrice.value
+    }
+
+    orderedItems.map((item) => {
+      (item.inCart = false), orderInfo.boughtItems.push(item.itemName)
+    })
+
+    const lastOrder = await axios.post('https://4aba6cffe4a51351.mokky.dev/orders', orderInfo)
+
+    lastOrderId.value = lastOrder.data.id
+
+    orderSent.value = !orderSent.value
+
+    cart.value = []
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 const openCart = () => {
   isCartOpen.value = true
 }
@@ -129,6 +157,10 @@ const cartManipulation = (item) => {
 const addToCart = (item) => {
   cart.value.push(item)
   item.inCart = true
+
+  if ((orderSent.value = false)) {
+    orderSent.value = true
+  }
 }
 
 const deleteFromCart = (item) => {
@@ -141,7 +173,10 @@ provide('cart', {
   closeCart,
   openCart,
   addToCart,
-  deleteFromCart
+  deleteFromCart,
+  sendAnOrder,
+  orderSent,
+  lastOrderId
 })
 
 provide('cartPrice', { cartPrice })

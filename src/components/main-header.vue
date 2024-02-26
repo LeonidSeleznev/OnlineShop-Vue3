@@ -1,9 +1,7 @@
 <script setup>
 import { defineEmits } from 'vue'
 const emits = defineEmits(['changeSortParameter', 'search'])
-// defineProps({
-//   sortItems: Function
-// })
+
 </script>
 
 <template>
