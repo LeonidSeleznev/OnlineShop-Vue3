@@ -9,6 +9,12 @@ import shopList from './components/shop-list.vue'
 
 onMounted(async () => {
   await fetchItems()
+  const savedCartFromStorage = localStorage.getItem('cart')
+  cart.value = savedCartFromStorage ? JSON.parse(savedCartFromStorage) : []
+  items.value = items.value.map((item) => ({
+    ...item,
+    inCart: cart.value.some((cartItem) => cartItem.id == item.id)
+  }))
 })
 
 const fetchItems = async () => {
@@ -27,8 +33,7 @@ const fetchItems = async () => {
     items.value = data.map((obj) => ({
       ...obj,
       inFavorites: false,
-      favoriteId: null,
-      inCart: false
+      favoriteId: null
     }))
 
     await fetchFavorites()
@@ -123,7 +128,7 @@ const sendAnOrder = async (orderedItems) => {
     }
 
     orderedItems.map((item) => {
-      (item.inCart = false), orderInfo.boughtItems.push(item.itemName)
+      ;(item.inCart = false), orderInfo.boughtItems.push(item.itemName)
     })
 
     const lastOrder = await axios.post('https://4aba6cffe4a51351.mokky.dev/orders', orderInfo)
@@ -131,6 +136,11 @@ const sendAnOrder = async (orderedItems) => {
     lastOrderId.value = lastOrder.data.id
 
     orderSent.value = !orderSent.value
+
+    items.value = items.value.map((item) => ({
+      ...item,
+      inCart: false
+    }))
 
     cart.value = []
   } catch (err) {
@@ -165,15 +175,26 @@ const addToCart = (item) => {
 
 const deleteFromCart = (item) => {
   cart.value.splice(cart.value.indexOf(item), 1)
-  item.inCart = false
+  items.value.map((deletedItem) => {
+    if (deletedItem.id == item.id) {
+      deletedItem.inCart = false
+    }
+  })
 }
+
+watch(
+  cart,
+  () => {
+    localStorage.setItem('cart', JSON.stringify(cart.value))
+  },
+  { deep: true }
+)
 
 provide('cart', {
   cart,
   closeCart,
   openCart,
-  addToCart,
-  deleteFromCart,
+  cartManipulation,
   sendAnOrder,
   orderSent,
   lastOrderId
@@ -189,7 +210,7 @@ provide('cartPrice', { cartPrice })
     <main class="mainWrapper w-3/4 m-auto">
       <main-header @search="searchForItem" @change-sort-parameter="changeSortParameter" />
       <shop-list
-        @add-to-cart="cartManipulation"
+        @cart-manipulation="cartManipulation"
         @add-to-favorites="addToFavorites"
         :items="items"
       />

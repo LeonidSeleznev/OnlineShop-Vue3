@@ -6,7 +6,7 @@ import cartOrderInfo from './cart-order-info.vue'
 import cartEmpty from './cart-empty.vue'
 import orderSentMsg from './order-sent-msg.vue'
 
-const { cart, deleteFromCart, orderSent } = inject('cart')
+const { cart, cartManipulation, orderSent } = inject('cart')
 </script>
 
 <template>
@@ -24,7 +24,7 @@ const { cart, deleteFromCart, orderSent } = inject('cart')
           :image-url="item.imageUrl"
           :item-name="item.itemName"
           :item-price="item.itemPrice"
-          @delete-from-cart="deleteFromCart(item)"
+          @delete-from-cart="cartManipulation(item)"
         />
       </div>
       <div v-if="cart.length == 0" class="divider min-h-1 flex-1"></div>
