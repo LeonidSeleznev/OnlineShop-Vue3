@@ -9,6 +9,7 @@ const emits = defineEmits(['cartManipulation', 'addToFavorites'])
 
 <template>
   <div
+    v-auto-animate
     class="itemsWrapper grid grid-cols-1 gap-3 sm:gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-5"
   >
     <item-component

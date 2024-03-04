@@ -204,7 +204,10 @@ provide('cartPrice', { cartPrice })
 </script>
 
 <template>
-  <cart-comp v-if="isCartOpen" />
+  <transition name="fade">
+    <cart-comp v-if="isCartOpen" />
+  </transition>
+
   <div class="container w-full sm:w-3/4 m-auto rounded-3xl bg-white shadow-xl">
     <index-header :cartPrice="cartPrice" @open-cart="openCart" />
     <main class="mainWrapper w-3/4 m-auto">
