@@ -17,6 +17,7 @@ const { cart, cartManipulation, orderSent } = inject('cart')
       <div
         v-if="cart.length !== 0"
         class="cartMain overflow-y-auto scroll-smooth p-1 flex items-center flex-col gap-y-2"
+        v-auto-animate
       >
         <cart-items
           v-for="item in cart"
@@ -28,7 +29,7 @@ const { cart, cartManipulation, orderSent } = inject('cart')
         />
       </div>
       <div v-if="cart.length == 0" class="divider min-h-1 flex-1"></div>
-      <cart-empty v-if="cart.length == 0 && !orderSent"/>
+      <cart-empty v-if="cart.length == 0 && !orderSent" />
       <order-sent-msg v-if="orderSent" />
       <div class="divider min-h-1 flex-1"></div>
       <cart-order-info v-if="cart.length !== 0" />
