@@ -1,7 +1,8 @@
 <script setup>
 import itemComponent from './item-component.vue'
 defineProps({
-  items: Array
+  items: Array,
+  fromFavs: Boolean
 })
 
 const emits = defineEmits(['cartManipulation', 'addToFavorites'])
@@ -18,8 +19,8 @@ const emits = defineEmits(['cartManipulation', 'addToFavorites'])
       :item-name="item.itemName"
       :item-price="item.itemPrice"
       :image-url="item.imageUrl"
-      :addToCartOnClick="() => emits('cartManipulation', item)"
-      :addToFavoritesOnClick="() => emits('addToFavorites', item)"
+      :addToCartOnClick="fromFavs ? null : () => emits('cartManipulation', item)"
+      :addToFavoritesOnClick="fromFavs ? null : () => emits('addToFavorites', item)"
       :in-cart="item.inCart"
       :in-favorites="item.inFavorites"
     />

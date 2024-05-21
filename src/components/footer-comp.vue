@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="footer bg-green-800 rounded-xl px-8 py-4 mt-10 sm:my-10 flex flex-col items-center w-full sm:w-3/4 m-auto lg:px-0 lg:flex-row lg:justify-around"
+    class="footer bg-green-700 rounded-xl px-8 py-4 mt-10 sm:my-10 flex flex-col items-center w-full sm:w-3/4 m-auto lg:px-0 lg:flex-row lg:justify-around"
   >
     <p class="copyright text-white mb-2">&copy;2024 - Все права защищены</p>
     <div class="socials flex flex-col">
