@@ -30,7 +30,7 @@ defineProps({
         </div>
         <img
           @click="addToCartOnClick"
-          :src="inCart ? '/public/checked.svg' : '/public/plus.svg'"
+          :src="inCart ? '../../public/checked.svg' : '../../public/plus.svg'"
           alt="addBtn"
           class="hover:cursor-pointer"
         />
