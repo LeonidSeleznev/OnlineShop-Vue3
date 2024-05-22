@@ -17,7 +17,7 @@ defineProps({
     <div class="itemWrapper w-36 relative m-auto py-5">
       <img
         @click="addToFavoritesOnClick"
-        :src="inFavorites ? '/public/like-2.svg' : '/public/like-1.svg'"
+        :src="inFavorites ? '/like-2.svg' : '/like-1.svg'"
         alt="favoriteBtn"
         class="absolute top-6 hover:cursor-pointer"
       />
@@ -30,7 +30,7 @@ defineProps({
         </div>
         <img
           @click="addToCartOnClick"
-          :src="inCart ? '../../public/checked.svg' : '../../public/plus.svg'"
+          :src="inCart ? '/checked.svg' : '/plus.svg'"
           alt="addBtn"
           class="hover:cursor-pointer"
         />
